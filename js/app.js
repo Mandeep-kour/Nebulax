@@ -89,88 +89,72 @@ function render() {
   const year = document.getElementById('year'); if (year) year.textContent = new Date().getFullYear();
 }
 
+const componentTemplates = {
+  'components/header.html': `<nav class="nav">
+  <div class="container nav-inner">
+    <a href="#product" class="brand" aria-label="Nebulax home">
+      <img src="assets/logo.svg" alt="Nebulax logo" class="site-logo" />
+    </a>
+    <div class="nav-links" id="nav-links"></div>
+    <a class="btn btn-primary" href="#launch">Launch App</a>
+  </div>
+</nav>`,
+
+  'components/preview.html': `<div class="preview-card">
+  <div class="glass-card">
+    <div class="token-row">
+      <div class="token-pill">
+        <div class="token-icon eth">ETH</div>
+        <div>
+          <div id="from-symbol">ETH</div>
+          <div class="label" id="from-name">Ethereum</div>
+        </div>
+      </div>
+      <div class="amount" id="from-amount">1.2500</div>
+    </div>
+  </div>
+  <div class="glass-card">
+    <div class="token-row">
+      <div class="token-pill">
+        <div class="token-icon usdc">USDC</div>
+        <div>
+          <div id="to-symbol">USDC</div>
+          <div class="label" id="to-name">USD Coin</div>
+        </div>
+      </div>
+      <div class="amount" id="to-amount">4100.00</div>
+    </div>
+  </div>
+  <div class="glass-card">
+    <div class="label">Best route</div>
+    <div class="amount" id="route-name">Uniswap + Curve</div>
+    <div class="label" id="route-meta" style="margin-top: 6px;">Low slippage • 0.23s execution</div>
+  </div>
+</div>`,
+  'components/footer.html': `<footer>
+  <div class="container">© <span id="year"></span> Nebulax. Built for fast, secure cross-chain swaps.</div>
+</footer>`
+};
+
 async function loadComponent(path, selector) {
+  let html = componentTemplates[path] || '';
+
   try {
     const res = await fetch(path);
-    if (!res.ok) throw new Error('Failed to load ' + path);
-    const html = await res.text();
-    document.querySelector(selector).innerHTML = html;
+    if (res.ok) {
+      html = await res.text();
+    }
   } catch (err) {
-    console.warn(err);
+    console.warn('Fetch failed for', path, err);
   }
+
+  const placeholder = document.querySelector(selector);
+  if (placeholder) placeholder.innerHTML = html;
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-  await loadComponent('components/header.html', 'body');
-  // Insert the remaining static structure after header
-  const header = document.querySelector('nav.nav');
-  if (header) header.insertAdjacentHTML('afterend', `
-    <header class="hero">
-      <div class="container hero-grid">
-        <div>
-          <div class="eyebrow" id="eyebrow"></div>
-          <h1 id="hero-title"></h1>
-          <p id="hero-copy"></p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#launch">Start swapping</a>
-            <a class="btn btn-secondary" href="#features">Explore features</a>
-          </div>
-          <div class="stat-row" id="stats-row"></div>
-        </div>
-      </div>
-    </header>
-    <main>
-      <section class="section" id="features">
-        <div class="container">
-          <div class="section-title">
-            <h2>Why teams choose Nebulax</h2>
-            <a href="#launch">See live demo</a>
-          </div>
-          <div class="grid feature-grid" id="features-grid"></div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="section-title">
-            <h2>How the experience works</h2>
-          </div>
-          <div class="grid workflow-grid" id="workflow-grid"></div>
-        </div>
-      </section>
-
-      <section class="section" id="launch">
-        <div class="container">
-          <div class="section-title">
-            <h2>Supported networks</h2>
-          </div>
-          <div class="grid network-grid" id="networks-grid"></div>
-        </div>
-      </section>
-
-      <section class="cta">
-        <div class="container">
-          <div class="cta-box">
-            <h3>Ready to move assets with clarity?</h3>
-            <p>Launch the experience and start routing liquidity across chains in seconds.</p>
-            <a class="btn btn-primary" href="#">Open Nebulax</a>
-          </div>
-        </div>
-      </section>
-    </main>
-  `);
-
-  // Insert preview after hero (into the hero-grid right column)
-  const heroGrid = document.querySelector('.hero-grid');
-  if (heroGrid) {
-    heroGrid.appendChild(document.createElement('div')).className = 'preview-placeholder';
-    const placeholder = document.querySelector('.preview-placeholder');
-    if (placeholder) placeholder.innerHTML = await (await fetch('components/preview.html')).text();
-  }
-
-  // Append footer component
-  const mainEl = document.querySelector('main');
-  if (mainEl) mainEl.insertAdjacentHTML('afterend', await (await fetch('components/footer.html')).text());
-
+  await loadComponent('components/header.html', '#header-placeholder');
+  await loadComponent('components/preview.html', '#preview-placeholder');
+  await loadComponent('components/footer.html', '#footer-placeholder');
   render();
 });
