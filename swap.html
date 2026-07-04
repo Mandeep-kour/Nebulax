@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nebulax | Cross-Chain Web3 Platform</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- header will be injected from components/header.html -->
+
+  <!-- hero will be injected by js -->
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow" id="eyebrow">Live cross-chain liquidity</div>
+        <h1 id="hero-title">Trade smarter with one beautiful Web3 experience.</h1>
+        <p id="hero-copy"></p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#launch">Start swapping</a>
+          <a class="btn btn-secondary" href="#features">Explore features</a>
+        </div>
+        <div class="stat-row" id="stats-row"></div>
+      </div>
+      <div class="preview-card">
+        <div class="glass-card">
+          <div class="token-row">
+            <div class="token-pill">
+              <div class="token-icon eth">ETH</div>
+              <div>
+                <div id="from-symbol">ETH</div>
+                <div class="label" id="from-name">Ethereum</div>
+              </div>
+            </div>
+            <div class="amount" id="from-amount">1.2500</div>
+          </div>
+        </div>
+        <div class="glass-card">
+          <div class="token-row">
+            <div class="token-pill">
+              <div class="token-icon usdc">USDC</div>
+              <div>
+                <div id="to-symbol">USDC</div>
+                <div class="label" id="to-name">USD Coin</div>
+              </div>
+            </div>
+            <div class="amount" id="to-amount">4100.00</div>
+          </div>
+        </div>
+        <div class="glass-card">
+          <div class="label">Best route</div>
+          <div class="amount" id="route-name">Uniswap + Curve</div>
+          <div class="label" id="route-meta" style="margin-top: 6px;">Low slippage • 0.23s execution</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-title">
+          <h2>Why teams choose Nebulax</h2>
+          <a href="#launch">See live demo</a>
+        </div>
+        <div class="grid feature-grid" id="features-grid"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <h2>How the experience works</h2>
+        </div>
+        <div class="grid workflow-grid" id="workflow-grid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="launch">
+      <div class="container">
+        <div class="section-title">
+          <h2>Supported networks</h2>
+        </div>
+        <div class="grid network-grid" id="networks-grid"></div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-box">
+          <h3>Ready to move assets with clarity?</h3>
+          <p>Launch the experience and start routing liquidity across chains in seconds.</p>
+          <a class="btn btn-primary" href="#">Open Nebulax</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© <span id="year"></span> Nebulax. Built for fast, secure cross-chain swaps.</div>
+  </footer>
+
+  <script>
+    const siteData = {
+      navLinks: ['Product', 'Features', 'Networks'],
+      eyebrow: 'Live cross-chain liquidity',
+      heroTitle: 'Trade smarter with one beautiful Web3 experience.',
+      heroCopy: 'Nebulax brings real-time quotes, deep liquidity, and a polished interface together so teams can swap, explore, and move value with confidence.',
+      stats: [
+        { label: 'Volume', value: '$4.8B+' },
+        { label: 'Routes', value: '180+' },
+        { label: 'Avg. speed', value: '0.2s' }
+      ],
+      features: [
+        { title: 'Instant routing', text: 'Smart pathfinding finds the best price across chains and liquidity pools.' },
+        { title: 'Secure by design', text: 'Clear approvals, gas estimates, and transparency help users stay in control.' },
+        { title: 'Designed for scale', text: 'A simple, premium interface keeps the experience smooth for every user.' }
+      ],
+      workflow: [
+        { title: 'Choose asset', text: 'Pick your from and to tokens in one simple flow.' },
+        { title: 'Review quote', text: 'Compare routes, slippage, and best execution in seconds.' },
+        { title: 'Confirm trade', text: 'Secure the swap and monitor progress in real time.' }
+      ],
+      networks: [
+        { title: 'Ethereum', text: 'Deep liquidity, broad token support, and reliable execution.' },
+        { title: 'Arbitrum', text: 'Low-cost routing with fast finality for high-volume flows.' },
+        { title: 'Polygon', text: 'Fast and affordable experiences for everyday users.' },
+        { title: 'Base', text: 'Growing ecosystem with modern tooling and low fees.' }
+      ],
+      preview: {
+        fromSymbol: 'ETH',
+        fromName: 'Ethereum',
+        toSymbol: 'USDC',
+        toName: 'USD Coin',
+        routeName: 'Uniswap + Curve',
+        routeMeta: 'Low slippage • 0.23s execution'
+      }
+    };
+
+    function render() {
+      document.getElementById('nav-links').innerHTML = siteData.navLinks.map(link => `<a href="#${link.toLowerCase()}">${link}</a>`).join('');
+      document.getElementById('eyebrow').textContent = siteData.eyebrow;
+      document.getElementById('hero-title').textContent = siteData.heroTitle;
+      document.getElementById('hero-copy').textContent = siteData.heroCopy;
+      document.getElementById('stats-row').innerHTML = siteData.stats.map(stat => `
+        <div class="stat-card">
+          <div class="label">${stat.label}</div>
+          <div class="value">${stat.value}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('from-symbol').textContent = siteData.preview.fromSymbol;
+      document.getElementById('from-name').textContent = siteData.preview.fromName;
+      document.getElementById('to-symbol').textContent = siteData.preview.toSymbol;
+      document.getElementById('to-name').textContent = siteData.preview.toName;
+      document.getElementById('route-name').textContent = siteData.preview.routeName;
+      document.getElementById('route-meta').textContent = siteData.preview.routeMeta;
+
+      document.getElementById('features-grid').innerHTML = siteData.features.map(feature => `
+        <article class="feature-card">
+          <h3>${feature.title}</h3>
+          <p>${feature.text}</p>
+        </article>
+      `).join('');
+
+      document.getElementById('workflow-grid').innerHTML = siteData.workflow.map((step, index) => `
+        <article class="workflow-card">
+          <h3>${index + 1}. ${step.title}</h3>
+          <p>${step.text}</p>
+        </article>
+      `).join('');
+
+      document.getElementById('networks-grid').innerHTML = siteData.networks.map(network => `
+        <article class="network-card">
+          <h3>${network.title}</h3>
+          <p>${network.text}</p>
+        </article>
+      `).join('');
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+    }
+
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+</body>
+</html>
